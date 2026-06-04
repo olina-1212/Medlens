@@ -26,13 +26,15 @@ model Document {
   id            String   @id @default(cuid())
 
   userId        String
-
+fileUrl       String?
   fileName      String?
   extractedText String?
-
+  aiResult Json?
   createdAt     DateTime @default(now())
 
   user          User @relation(fields: [userId], references: [id])
+  
+  
 
   @@index([userId])
 }

@@ -1,12 +1,13 @@
 import { useState, useRef } from "react";
 import { UploadCloud, FileUp } from "lucide-react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function UploadCard() {
   const [dragOver, setDragOver] = useState(false);
   const [fileName, setFileName] = useState(null);
   const [uploading, setUploading] = useState(false);
-
+  const navigate = useNavigate();
   const inputRef = useRef(null);
 
   const uploadFile = async (file) => {
@@ -16,16 +17,34 @@ export default function UploadCard() {
       const formData = new FormData();
       formData.append("file", file);
 
-      console.log("Ready to upload:", file.name);
+      const token = localStorage.getItem("token");
 
-      // Future backend connection
-      // const response = await axios.post(
-      //   "http://localhost:5000/api/upload",
-      //   formData
-      // );
+      if (!token) {
+        alert("Please login first (no token found)");
+        return;
+      }
 
-    } catch (error) {
-      console.error(error);
+      const res = await axios.post(
+        "http://localhost:5000/api/upload/prescription",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("OCR + AI Result:", res.data);
+
+      // 🔥 IMPORTANT: pass full data to next page
+      navigate(`/analysis?docId=${res.data.documentId}`);
+
+      setFileName(file.name);
+
+    } catch (err) {
+      console.error("Upload failed:", err.response?.data || err.message);
+      alert("Upload failed. Check backend.");
     } finally {
       setUploading(false);
     }
@@ -84,8 +103,7 @@ export default function UploadCard() {
             className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
           >
             <FileUp className="h-5 w-5" />
-
-            {uploading ? "Uploading..." : "Browse Files"}
+            {uploading ? "Processing AI..." : "Browse Files"}
           </button>
 
           {fileName && (

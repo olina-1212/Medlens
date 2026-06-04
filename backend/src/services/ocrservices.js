@@ -1,10 +1,13 @@
 const Tesseract = require("tesseract.js");
 
-const extractTextFromImage = async (imageBuffer) => {
+const extractTextFromImage = async (imagePath) => {
   try {
     const result = await Tesseract.recognize(
-      imageBuffer,
-      "eng"
+      imagePath,
+      "eng",
+      {
+        logger: (m) => console.log(m), // optional debug
+      }
     );
 
     return result.data.text;
