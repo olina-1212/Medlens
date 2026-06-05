@@ -12,6 +12,7 @@ Extract medicines from the prescription text and return ONLY valid JSON.
 
 Format:
 {
+  "summary": "",
   "medicines": [
     {
       "name": "",
@@ -27,11 +28,10 @@ Format:
 
 Rules:
 - Return valid JSON only
-- Use simple patient-friendly language
+- summary should explain why these medicines may have been prescribed in 100 words
 - Infer timing when possible (Morning, Afternoon, Evening, Night)
-- Extract duration if mentioned
-- If duration is not mentioned, return an empty string
-- Explain medicine usage in simple language
+- Extract duration if mentioned if not mentioned return empty string
+- Dont invent medicines 
 - List only common side effects briefly
 - No markdown
 - No extra text

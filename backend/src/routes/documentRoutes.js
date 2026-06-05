@@ -98,4 +98,42 @@ router.put("/:id", authMiddleware, async (req, res) => {
   }
 });
 
+
+// ✅ ADD THIS HERE (NEW ROUTE: save AI result)
+router.put("/:id/ai", authMiddleware, async (req, res) => {
+  try {
+    const { aiResult } = req.body;
+
+    // 🔒 SAME OWNERSHIP CHECK (IMPORTANT)
+    const document = await prisma.document.findFirst({
+      where: {
+        id: req.params.id,
+        userId: req.user.userId,
+      },
+    });
+
+    if (!document) {
+      return res.status(404).json({
+        message: "Document not found",
+      });
+    }
+
+    const updatedDocument = await prisma.document.update({
+      where: {
+        id: req.params.id,
+      },
+      data: {
+        aiResult,
+      },
+    });
+
+    res.json(updatedDocument);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Failed to save analysis",
+    });
+  }
+});
+
 module.exports = router;
