@@ -136,4 +136,37 @@ router.put("/:id/ai", authMiddleware, async (req, res) => {
   }
 });
 
+// Delete document
+router.delete("/:id", authMiddleware, async (req, res) => {
+  try {
+    const document = await prisma.document.findFirst({
+      where: {
+        id: req.params.id,
+        userId: req.user.userId,
+      },
+    });
+
+    if (!document) {
+      return res.status(404).json({
+        message: "Document not found",
+      });
+    }
+
+    await prisma.document.delete({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    res.json({
+      message: "Document deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Failed to delete document",
+    });
+  }
+});
+
 module.exports = router;
