@@ -26,6 +26,45 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/stats", authMiddleware, async (req, res) => {
+  try {
+    const documents = await prisma.document.findMany({
+      where: {
+        userId: req.user.userId,
+      },
+    });
+
+    const totalPrescriptions = documents.length;
+
+    const analyzedCount = documents.filter(
+      (doc) => doc.aiResult
+    ).length;
+
+    let medicineCount = 0;
+
+    documents.forEach((doc) => {
+      if (
+        doc.aiResult &&
+        doc.aiResult.medicines
+      ) {
+        medicineCount += doc.aiResult.medicines.length;
+      }
+    });
+
+    res.json({
+      totalPrescriptions,
+      analyzedCount,
+      medicineCount,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to fetch stats",
+    });
+  }
+});
+
 // Get a single document
 router.get("/:id", authMiddleware, async (req, res) => {
   try {
