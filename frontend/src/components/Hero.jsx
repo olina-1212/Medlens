@@ -39,10 +39,16 @@ export default function Hero() {
               <Upload className="h-5 w-5" />
               Upload Prescription
             </button>
-
-            <button className="rounded-xl border border-gray-300 px-6 py-3 font-medium hover:bg-gray-100">
-              Learn More
-            </button>
+<button
+  onClick={() => {
+    document
+      .getElementById("about-medlens")
+      ?.scrollIntoView({ behavior: "smooth" });
+  }}
+  className="rounded-xl border border-gray-300 px-6 py-3 font-medium transition hover:bg-gray-100"
+>
+  Learn More
+</button>
           </div>
         </div>
 
