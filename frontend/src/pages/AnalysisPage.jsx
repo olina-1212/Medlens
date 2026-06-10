@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import { Trash2, Plus } from "lucide-react";
 
 export default function AnalysisPage() {
   const [searchParams] = useSearchParams();
@@ -38,6 +39,16 @@ export default function AnalysisPage() {
 
     if (docId) fetchDocument();
   }, [docId]);
+  const deleteMedicine = (indexToDelete) => {
+  const updated = structuredClone(document);
+
+  updated.aiResult.medicines =
+    updated.aiResult.medicines.filter(
+      (_, index) => index !== indexToDelete
+    );
+
+  setDocument(updated);
+};
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -111,6 +122,32 @@ export default function AnalysisPage() {
                         ) : (
                           <div className="space-y-5">
 
+  <button
+    onClick={() => {
+      const updated = structuredClone(document);
+
+      if (!updated.aiResult.medicines) {
+        updated.aiResult.medicines = [];
+      }
+
+      updated.aiResult.medicines.push({
+        name: "",
+        dosage: "",
+        frequency: "",
+        timing: "",
+        duration: "",
+        usage: "",
+        sideEffects: "",
+      });
+
+      setDocument(updated);
+    }}
+    className="flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+  >
+    <Plus size={18} />
+    Add Medicine
+  </button>
+
                             {document.aiResult?.medicines?.map((medicine, index) => (
                               <div
                                 key={index}
@@ -119,18 +156,27 @@ export default function AnalysisPage() {
 
                                 {/* MEDICINE NAME */}
                                 <div className="flex items-center gap-2 mb-4">
-                                  <span className="text-xl">💊</span>
+  <span className="text-xl">💊</span>
 
-                                  <input
-                                    value={medicine.name}
-                                    onChange={(e) => {
-                                      const updated = { ...document };
-                                      updated.aiResult.medicines[index].name = e.target.value;
-                                      setDocument(updated);
-                                    }}
-                                    className="font-semibold text-lg bg-transparent outline-none w-full"
-                                  />
-                                </div>
+  <input
+    value={medicine.name}
+    onChange={(e) => {
+      const updated = { ...document };
+      updated.aiResult.medicines[index].name =
+        e.target.value;
+      setDocument(updated);
+    }}
+    className="font-semibold text-lg bg-transparent outline-none w-full"
+  />
+
+  <button
+    onClick={() => deleteMedicine(index)}
+    className="flex items-center gap-1 rounded-lg bg-red-100 px-3 py-2 text-red-600 hover:bg-red-200"
+  >
+    <Trash2 size={16} />
+    Delete
+  </button>
+</div>
 
                                 {/* GRID */}
                                 <div className="grid grid-cols-2 gap-4">
