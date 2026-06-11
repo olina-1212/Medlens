@@ -20,7 +20,7 @@ export default function HistoryPage() {
         const token = localStorage.getItem("token");
 
         const res = await axios.get(
-          "http://localhost:5000/api/documents",
+          "import.meta.env.VITE_API_URL/api/documents",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ export default function HistoryPage() {
       const token = localStorage.getItem("token");
 
       await axios.delete(
-        `http://localhost:5000/api/documents/${id}`,
+        `import.meta.env.VITE_API_URL/api/documents/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

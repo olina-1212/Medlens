@@ -20,7 +20,7 @@ export default function AnalysisPage() {
         const token = localStorage.getItem("token");
 
         const res = await axios.get(
-          `http://localhost:5000/api/documents/${docId}`,
+          `import.meta.env.VITE_API_URL/api/documents/${docId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -73,7 +73,7 @@ export default function AnalysisPage() {
 
                   {document.fileUrl ? (
                     <img
-                      src={`http://localhost:5000${encodeURI(document.fileUrl)}`}
+                      src={`import.meta.env.VITE_API_URL${encodeURI(document.fileUrl)}`}
                       alt="Prescription"
                       className="w-full rounded-lg"
                     />
@@ -271,7 +271,7 @@ export default function AnalysisPage() {
                                     const token = localStorage.getItem("token");
 
                                     await axios.put(
-                                      `http://localhost:5000/api/documents/${document.id}/ai`,
+                                      `import.meta.env.VITE_API_URL/api/documents/${document.id}/ai`,
                                       {
                                         aiResult: document.aiResult,
                                       },

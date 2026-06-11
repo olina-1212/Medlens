@@ -35,7 +35,7 @@ router.post(
       const axios = require("axios");
 
 await axios.post(
-  `http://localhost:5000/api/ai/analyze/${document.id}`,
+  `import.meta.env.VITE_API_URL/api/ai/analyze/${document.id}`,
   {},
   {
     headers: {

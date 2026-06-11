@@ -1,16 +1,37 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
-import AnalysisPage from "./pages/AnalysisPage";
 import HistoryPage from "./pages/HistoryPage";
+import AnalysisPage from "./pages/AnalysisPage";
 
 function App() {
+  const token = localStorage.getItem("token");
+
   return (
     <Routes>
       <Route path="/auth" element={<Auth />} />
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/history" element={<HistoryPage />} />
-      <Route path="/analysis" element={<AnalysisPage />} />
+
+      <Route
+        path="/"
+        element={
+          token ? <Dashboard /> : <Navigate to="/auth" replace />
+        }
+      />
+
+      <Route
+        path="/history"
+        element={
+          token ? <HistoryPage /> : <Navigate to="/auth" replace />
+        }
+      />
+
+      <Route
+        path="/analysis"
+        element={
+          token ? <AnalysisPage /> : <Navigate to="/auth" replace />
+        }
+      />
     </Routes>
   );
 }
