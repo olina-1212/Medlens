@@ -16,7 +16,7 @@ export default function StatsGrid() {
         const token = localStorage.getItem("token");
 
         const res = await axios.get(
-          "http://localhost:5000/api/documents/stats",
+          "http://import.meta.env.VITE_API_URL/api/documents/stats",
           {
             headers: {
               Authorization: `Bearer ${token}`,
