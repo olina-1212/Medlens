@@ -50,7 +50,7 @@ export default function Auth() {
 
       localStorage.setItem("token", res.data.token);
 
-      navigate("/");
+window.location.href = "/";
     } catch (err) {
       setError(
         err?.response?.data?.message ||
