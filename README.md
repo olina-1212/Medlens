@@ -91,3 +91,6 @@ AI & OCR: Groq AI, Tesseract OCR
 - Prescription history tracking
 - Mobile application
 - Advanced report analysis
+
+## Author
+**Olina Chakraborty**
